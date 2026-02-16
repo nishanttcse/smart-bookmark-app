@@ -14,25 +14,11 @@ type Bookmark = {
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const router = useRouter();
-
-  // Get logged-in user
-  useEffect(() => {
-    const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-
-      if (!data.user) {
-        router.push("/");
-      } else {
-        setUser(data.user);
-        fetchBookmarks(data.user.id);
-      }
-    };
-
-    getUser();
-  }, []);
 
   // Fetch bookmarks
   const fetchBookmarks = async (userId: string) => {
@@ -45,26 +31,22 @@ export default function Dashboard() {
     if (data) setBookmarks(data);
   };
 
-  // Add bookmark
-  const addBookmark = async () => {
-    if (!title || !url) return;
+  // Get logged-in user
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
 
-    await supabase.from("bookmarks").insert([
-      {
-        title,
-        url,
-        user_id: user.id,
-      },
-    ]);
+      if (!data.user) {
+        router.push("/");
+      } else {
+        setUser(data.user);
+        await fetchBookmarks(data.user.id);
+        setLoading(false);
+      }
+    };
 
-    setTitle("");
-    setUrl("");
-  };
-
-  // Delete bookmark
-  const deleteBookmark = async (id: string) => {
-    await supabase.from("bookmarks").delete().eq("id", id);
-  };
+    getUser();
+  }, []);
 
   // Realtime subscription
   useEffect(() => {
@@ -90,10 +72,42 @@ export default function Dashboard() {
     };
   }, [user]);
 
+  // Add bookmark
+  const addBookmark = async () => {
+    if (!title || !url) return;
+
+    // URL validation
+    if (!url.startsWith("http")) {
+      alert("Please enter a valid URL (include https://)");
+      return;
+    }
+
+    await supabase.from("bookmarks").insert([
+      {
+        title,
+        url,
+        user_id: user.id,
+      },
+    ]);
+
+    setTitle("");
+    setUrl("");
+  };
+
+  // Delete bookmark
+  const deleteBookmark = async (id: string) => {
+    await supabase.from("bookmarks").delete().eq("id", id);
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push("/");
   };
+
+  // Proper loading UI (correct placement)
+  if (loading) {
+    return <p className="p-10">Loading...</p>;
+  }
 
   return (
     <div className="p-10 max-w-2xl mx-auto">
@@ -149,6 +163,7 @@ export default function Dashboard() {
             <a
               href={bookmark.url}
               target="_blank"
+              rel="noopener noreferrer"
               className="text-blue-600"
             >
               {bookmark.title}
