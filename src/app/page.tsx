@@ -5,15 +5,16 @@ import { supabase } from "@/lib/supabase";
 export default function Home() {
 
   const handleLogin = async () => {
-    const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL + "/dashboard";
+  const redirectUrl =
+    process.env.NEXT_PUBLIC_SITE_URL + "/dashboard";
 
   await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: redirectUrl,
-      },
-    });
-  };
+    provider: "google",
+    options: {
+      redirectTo: redirectUrl,
+    },
+  });
+};
 
   return (
     <div className="flex h-screen items-center justify-center">
