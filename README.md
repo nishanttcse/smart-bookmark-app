@@ -1,13 +1,13 @@
-Smart Bookmark App
+##Smart Bookmark App
 🔗 Live Demo
 
 https://smart-bookmark-app-six-mu.vercel.app
 
-📦 GitHub Repository
+#📦 GitHub Repository
 
-[Add your GitHub repo link here]
+(https://github.com/nishanttcse/smart-bookmark-app)
 
-📌 Overview
+3📌 Overview
 
 Smart Bookmark App is a secure, real-time bookmark manager built using:
 
@@ -31,7 +31,7 @@ See updates in real-time across multiple tabs
 
 Access only their own data (fully isolated)
 
-🛠 Tech Stack
+#🛠 Tech Stack
 
 Frontend: Next.js (App Router, Client Components)
 
@@ -43,7 +43,7 @@ Styling: Tailwind CSS
 
 Deployment: Vercel
 
-🔐 Authentication
+#🔐 Authentication
 
 Implemented Google OAuth using Supabase Auth.
 
@@ -83,7 +83,7 @@ url (text)
 
 created_at (timestamp)
 
-🔒 Security Implementation (RLS)
+#🔒 Security Implementation (RLS)
 
 Row Level Security (RLS) was enabled on the bookmarks table.
 
@@ -109,7 +109,7 @@ Users cannot delete other users’ data
 
 Security is enforced at the database layer, not just frontend filtering.
 
-⚡ Real-Time Updates
+## Real-Time Updates
 
 Used Supabase postgres_changes subscription:
 
@@ -121,7 +121,7 @@ Two tabs update instantly without refresh
 
 This satisfies the real-time requirement.
 
-🚧 Problems Faced & Debugging Process
+##🚧Problems Faced & Debugging Process
 
 Here are the actual issues encountered and how they were resolved:
 
